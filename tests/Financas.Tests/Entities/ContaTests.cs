@@ -77,4 +77,47 @@ public class ContaTests
                 new Conta("Conta Principal", tipoInvalido, 0m)
         );
     }
+
+    [Fact]
+    public void AlterarNome_ComNomeValido_DeveAtualizarNome()
+    {
+        // Arrange
+        var conta = new Conta("Conta Principal", TipoConta.Corrente, 100m);
+
+        // Act
+        conta.AlterarNome("Nubank");
+
+        // Assert
+        Assert.Equal("Nubank", conta.Nome);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData(null)]
+    public void AlterarNome_ComNomeInvalido_DeveLancarExcecao(string? novoNome)
+    {
+        // Arrange
+        var conta = new Conta("Conta Principal", TipoConta.Corrente, 100m);
+
+        // Act e Assert
+        Assert.Throws<ArgumentException>(() =>
+                conta.AlterarNome(novoNome!)
+                );
+
+        Assert.Equal("Conta Principal", conta.Nome);
+    }
+
+    [Fact]
+    public void AlterarNome_ComEspacos_DeveNormalizarNome()
+    {
+        // Arrange
+        var conta = new Conta("Conta Principal", TipoConta.Corrente, 100m);
+
+        // Act
+        conta.AlterarNome("  Nubank  ");
+
+        // Assert 
+        Assert.Equal("Nubank", conta.Nome);
+    }
 }

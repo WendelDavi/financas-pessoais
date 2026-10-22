@@ -29,9 +29,25 @@ public class Conta
         }
 
         Id = Guid.NewGuid();
-        Nome = nome.Trim();
+        Nome = ValidarNome(nome);
         Tipo = tipo;
         SaldoInicial = saldoInicial;
         Ativa = true;
+    }
+
+    public void AlterarNome(string novoNome)
+    {
+        Nome = ValidarNome(novoNome);
+    }
+    public static string ValidarNome(string nome)
+    {
+        if (string.IsNullOrWhiteSpace(nome))
+        {
+            throw new ArgumentException(
+                    "O nome da conta não pode ser vazio.",
+                    nameof(nome)
+                    );
+        }
+        return nome.Trim();
     }
 }
